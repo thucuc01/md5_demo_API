@@ -3,6 +3,8 @@ package com.example.demo.service;
 import com.example.demo.model.Employee;
 import com.example.demo.repo.EmployeeRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,5 +39,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         return false;
 
 
+    }
+
+    @Override
+    public List<Employee> findAll(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<Employee> employees = employeeRepo.findAll(pageRequest);
+        return employees.getContent();
     }
 }

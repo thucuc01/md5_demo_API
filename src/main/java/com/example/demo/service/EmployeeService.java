@@ -13,4 +13,5 @@ public interface EmployeeService {
     Employee save(Employee oder);
 
     boolean remove(Long id);
+    List<Employee> findAll(int page, int size);
 }

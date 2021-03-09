@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.City;
 import com.example.demo.model.Employee;
+import com.example.demo.model.Response;
 import com.example.demo.service.CityServiceImpl;
 import com.example.demo.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/employees")
 public class EmployeeController {
     @Autowired
@@ -20,7 +22,21 @@ public class EmployeeController {
     @Autowired
     private CityServiceImpl cityService;
 
+    private final Response response=new Response();
 
+    @GetMapping("/list")
+    public Response getAllStudent(@RequestParam int page, @RequestParam int size) {
+        List<Employee> employees = employeeService.findAll(page, size);
+        response.setData(employees);
+        if (employees.isEmpty()) {
+            response.setStatus(400);
+            response.setMessage("Empty");
+        } else {
+            response.setStatus(203);
+            response.setMessage("Success");
+        }
+        return response;
+    }
     @GetMapping
     public List<Employee> getAll() {
         return employeeService.findAll();
